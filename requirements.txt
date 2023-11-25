@@ -3,3 +3,4 @@ requests
 bs4
 tabulate
 python-dotenv
+matplotlib
