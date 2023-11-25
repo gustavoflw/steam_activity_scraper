@@ -68,30 +68,6 @@ class GameStalker:
         return total_seconds
 
     def stalk_and_report(self):
-        print_with_color(f"\nDetermining if should report", 'yellow')
-        should_report = False
-
-        if self.__last_reported_datetime is None:
-            should_report = True
-        else:
-            self.__last_reported_datetime = pd.Timestamp(self.__last_reported_datetime)
-            now_datetime = pd.Timestamp.now()
-            time_difference = now_datetime - self.__last_reported_datetime
-            time_difference_minutes = time_difference.total_seconds() / 60
-            if time_difference_minutes >= self.__minutes_between_reports:
-                should_report = True
-            else:
-                remaining_minutes = self.__minutes_between_reports - time_difference_minutes
-                remaining_seconds = int(remaining_minutes * 60)
-                print(f"remaining_seconds: {remaining_seconds}")
-        if should_report:
-            self.__last_reported_datetime = pd.Timestamp.now()
-        print(f"last_reported_datetime: {self.__last_reported_datetime}")
-        print(f"should_report: {should_report}")
-
-        if should_report is False:
-            return
-
         now_date, now_hour = self.__get_date_hour()
         steam_profiles = self.__get_trackable_profiles()
         requester = Requester(steam_profiles)
@@ -153,6 +129,27 @@ class GameStalker:
             plt.xticks(rotation=90)
             plt.tight_layout()
             plt.savefig(os.path.join(self.__path_daily_reports_dir, f"{profile}.png"))
+
+        print_with_color(f"\nDetermining if should report", 'yellow')
+        should_report = False
+
+        if self.__last_reported_datetime is None:
+            should_report = True
+        else:
+            self.__last_reported_datetime = pd.Timestamp(self.__last_reported_datetime)
+            now_datetime = pd.Timestamp.now()
+            time_difference = now_datetime - self.__last_reported_datetime
+            time_difference_minutes = time_difference.total_seconds() / 60
+            if time_difference_minutes >= self.__minutes_between_reports:
+                should_report = True
+            else:
+                remaining_minutes = self.__minutes_between_reports - time_difference_minutes
+                remaining_seconds = int(remaining_minutes * 60)
+                print(f"remaining_seconds: {remaining_seconds}")
+        if should_report:
+            self.__last_reported_datetime = pd.Timestamp.now()
+        print(f"last_reported_datetime: {self.__last_reported_datetime}")
+        print(f"should_report: {should_report}")
 
         if not should_report:
             print_with_color(f"\nNot reporting yet (remaining: {remaining_minutes} min)", 'yellow')
