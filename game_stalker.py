@@ -129,6 +129,7 @@ class GameStalker:
             plt.xticks(rotation=90)
             plt.tight_layout()
             plt.savefig(os.path.join(self.__path_daily_reports_dir, f"{profile}.png"))
+            plt.close()
 
         print_with_color(f"\nDetermining if should report", 'yellow')
         should_report = False
