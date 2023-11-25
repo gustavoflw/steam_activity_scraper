@@ -30,4 +30,4 @@ if __name__ == '__main__':
     while True:
         game_stalker.stalk_and_report()
         print('Sleeping...')
-        time.sleep(60*60)
+        time.sleep(60)
